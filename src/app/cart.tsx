@@ -3,19 +3,22 @@ import { StatusBar } from 'expo-status-bar'
 import { useCart } from '@/src/providers/CartProvider'
 import CartListItem from '@/src/components/CartListItem'
 import { Stack } from 'expo-router'
+import Button from '../components/Button'
 
 const CartScreen = () => {
-    const { items } = useCart()
+    const { items, total } = useCart()
 
     return (
-        <View>
+        <View style={{ padding: 10 }}>
             <Stack.Screen options={{ title: "Cart", headerTitleAlign: "center" }} />
             <FlatList
                 data={items}
                 renderItem={({ item }) => <CartListItem cartItem={item} />}
-                contentContainerStyle={{ padding: 10, gap: 10 }}
+                contentContainerStyle={{ gap: 10 }}
             />
 
+            <Text style={{ marginTop: 20, fontSize: 20, fontWeight: '500' }}>Total: ${total}</Text>
+            <Button text="Checkout" />
             <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
         </View>
     )
