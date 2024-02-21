@@ -95,7 +95,10 @@ export const useDeleteProduct = () => {
 
   return useMutation({
     mutationFn: async (id: number) => {
-      const { error } = await supabase.from("products").delete().eq("id", id);
+      const { error } = await supabase
+        .from("products")
+        .delete()
+        .eq("id", id);
       if (error) {
         throw new Error(error.message);
       }
@@ -106,4 +109,4 @@ export const useDeleteProduct = () => {
       });
     },
   });
-};
+}
