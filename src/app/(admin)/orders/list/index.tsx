@@ -1,9 +1,24 @@
-import orders from '@/assets/data/orders';
+import { useAdminOrderList } from '@/src/api/orders';
 import OrderListItem from '@/src/components/OrderListItem';
 import { Stack } from 'expo-router';
-import { FlatList } from 'react-native';
+import { ActivityIndicator, FlatList, Text } from 'react-native';
+import { useInsertOrderSubscription } from '@/src/api/orders/subscriptions';
+
 
 export default function OrdersScreen() {
+
+  const { data: orders, isLoading, error } = useAdminOrderList({ archived: false })
+
+  useInsertOrderSubscription()
+
+  if (isLoading) {
+    return <ActivityIndicator />
+  }
+
+  if (error) {
+    return <Text>Failed to Fetch order</Text>
+  }
+
   return (
     <>
       <Stack.Screen options={{ title: 'Active' }} />
