@@ -36,8 +36,16 @@
     "experiments": {
       "typedRoutes": true
     },
-    "packagerOpts":{
+    "packagerOpts": {
       "url": "http://127.0.0.1:54321"
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "dffa0cbe-5b2b-4095-beba-7f40c0df4b77"
+      }
     }
   }
 }
