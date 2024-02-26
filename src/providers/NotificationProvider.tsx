@@ -22,7 +22,7 @@ const NotificationProvider = ({ children }: PropsWithChildren) => {
     if (!newToken) return
     await supabase.from("profiles").update({
       expo_push_token: newToken,
-    }).eq("id", profile.id);
+    }).eq("id", profile?.id);
   }
 
   useEffect(() => {

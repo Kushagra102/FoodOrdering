@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from "react";
-import { Button, Platform, Text, View } from "react-native";
+import { Platform } from "react-native";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
 import { supabase } from "./supabase";
 import { Tables } from "../types";
+import { ExpoPushToken } from "expo-notifications";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -76,7 +76,7 @@ export async function registerForPushNotificationsAsync() {
   return token;
 }
 
-const getUserToken = async (userId) => {
+const getUserToken = async (userId: string) => {
   const { data } = await supabase
     .from("profiles")
     .select("*")
@@ -86,22 +86,26 @@ const getUserToken = async (userId) => {
 };
 
 export const notifyUserAboutOrderUpdate = async (order: Tables<"orders">) => {
-  const token = await getUserToken(order.user_id);
-  const title = `Your Order is ${order.status}`;
-  let body = "";
-  if (order.status === "Cooking") {
-    body = "Delicious pizzas are being prepared.";
-  } else if (order.status === "Delivering") {
-    body = "Will be delivered in 15 mins.";
-  } else if (order.status === "Delivered") {
-    body = "Your order has been delivered. Enjoy the Lazeez Meal.";
-  } else if (order.status === "New") {
-    body = "Order Placed Successfully.";
-  }
-
-  sendPushNotification(
-    token,
-    title,
-    body,
+  const token = await getUserToken(
+    order.user_id!,
   );
+  if (token) {
+    const title = `Your Order is ${order.status}`;
+    let body = "";
+    if (order.status === "Cooking") {
+      body = "Delicious pizzas are being prepared.";
+    } else if (order.status === "Delivering") {
+      body = "Will be delivered in 15 mins.";
+    } else if (order.status === "Delivered") {
+      body = "Your order has been delivered. Enjoy the Lazeez Meal.";
+    } else if (order.status === "New") {
+      body = "Order Placed Successfully.";
+    }
+
+    sendPushNotification(
+      token,
+      title,
+      body,
+    );
+  }
 };
