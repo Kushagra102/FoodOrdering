@@ -36,9 +36,6 @@
     "experiments": {
       "typedRoutes": true
     },
-    "packagerOpts": {
-      "url": "http://127.0.0.1:54321"
-    },
     "extra": {
       "router": {
         "origin": false
